@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Product List</h2>
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "my-3" }))
+{
+    <div class="input-group">
+        @Html.DropDownList("selectedCategoryId", ViewData["Categories"] as SelectList, "-- Select Category --", new { @class = "form-control" })
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Show Products</button>
+        </div>
+    </div>
+}
+
+@if (ViewData["Products"] != null)
+{
+    <div class="row mt-4">
+        @foreach (var product in ViewData["Products"] as IEnumerable<Product>)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (product.ThumbNailPhoto != null && product.ThumbNailPhoto.Length > 0)
+                    {
+                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(product.ThumbNailPhoto))" class="card-img-top" alt="Product Image">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">Product Number: @product.ProductNumber</p>
+                        <p class="card-text">Color: @product.Color</p>
+                        <p class="card-text">Standard Cost: @product.StandardCost</p>
+                        <p class="card-text">List Price: @product.ListPrice</p>
+                        <p class="card-text">Size: @product.Size</p>
+                        <p class="card-text">Weight: @product.Weight</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
